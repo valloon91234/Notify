@@ -1,0 +1,1438 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Bitmex.Client.Websocket</name>
+    </assembly>
+    <members>
+        <member name="T:Bitmex.Client.Websocket.BitmexValues">
+            <summary>
+            Bitmex static urls
+            </summary>
+        </member>
+        <member name="F:Bitmex.Client.Websocket.BitmexValues.ApiWebsocketUrl">
+            <summary>
+            Main Bitmex url to websocket API
+            </summary>
+        </member>
+        <member name="F:Bitmex.Client.Websocket.BitmexValues.ApiWebsocketTestnetUrl">
+            <summary>
+            Testnet Bitmext url to websocket API
+            </summary>
+        </member>
+        <member name="T:Bitmex.Client.Websocket.Client.BitmexClientStreams">
+            <summary>
+            All provided streams.
+            You need to send subscription request in advance (via method `Send()` on BitmexWebsocketClient)
+            </summary>
+        </member>
+        <member name="P:Bitmex.Client.Websocket.Client.BitmexClientStreams.ErrorStream">
+            <summary>
+            Server errors stream
+            </summary>
+        </member>
+        <member name="P:Bitmex.Client.Websocket.Client.BitmexClientStreams.InfoStream">
+            <summary>
+            Info stream, sends initial information after reconnection
+            </summary>
+        </member>
+        <member name="P:Bitmex.Client.Websocket.Client.BitmexClientStreams.PongStream">
+            <summary>
+            Response stream to every ping request
+            </summary>
+        </member>
+        <member name="P:Bitmex.Client.Websocket.Client.BitmexClientStreams.SubscribeStream">
+            <summary>
+            Subscription info stream, emits status after sending subscription request
+            </summary>
+        </member>
+        <member name="P:Bitmex.Client.Websocket.Client.BitmexClientStreams.TradesStream">
+            <summary>
+            Trades stream - emits every executed trade on Bitmex
+            </summary>
+        </member>
+        <member name="P:Bitmex.Client.Websocket.Client.BitmexClientStreams.TradeBinStream">
+            <summary>
+            Chunk of trades - emits grouped trades together
+            </summary>
+        </member>
+        <member name="P:Bitmex.Client.Websocket.Client.BitmexClientStreams.BookStream">
+            <summary>
+            Order book stream - emits every update in the order book
+            </summary>
+        </member>
+        <member name="P:Bitmex.Client.Websocket.Client.BitmexClientStreams.Book25Stream">
+            <summary>
+            Order book stream - emits every update in the order book
+            </summary>
+        </member>
+        <member name="P:Bitmex.Client.Websocket.Client.BitmexClientStreams.QuoteStream">
+            <summary>
+            Quotes stream - emits on every change of top level of order book
+            </summary>
+        </member>
+        <member name="P:Bitmex.Client.Websocket.Client.BitmexClientStreams.LiquidationStream">
+            <summary>
+            Liquidation stream - emits message whenever liquidation happens on Bitmex
+            </summary>
+        </member>
+        <member name="P:Bitmex.Client.Websocket.Client.BitmexClientStreams.InstrumentStream">
+            <summary>
+            Stream of all Trade-able Contracts, Indices, and History
+            </summary>
+        </member>
+        <member name="P:Bitmex.Client.Websocket.Client.BitmexClientStreams.FundingStream">
+            <summary>
+            Fundings stream - updates of swap funding rates. Sent every funding interval (usually 8hrs) 
+            <para>!!! Any time you connect to the stream, you receive the latest active funding rate</para>
+            </summary>
+        </member>
+        <member name="P:Bitmex.Client.Websocket.Client.BitmexClientStreams.AuthenticationStream">
+            <summary>
+            Authentication info stream, emits status after sending authentication request
+            </summary>
+        </member>
+        <member name="P:Bitmex.Client.Websocket.Client.BitmexClientStreams.WalletStream">
+            <summary>
+            Stream for every wallet balance update
+            </summary>
+        </member>
+        <member name="P:Bitmex.Client.Websocket.Client.BitmexClientStreams.OrderStream">
+            <summary>
+            Stream of all your active orders
+            </summary>
+        </member>
+        <member name="P:Bitmex.Client.Websocket.Client.BitmexClientStreams.PositionStream">
+            <summary>
+            Stream of all your active positions
+            </summary>
+        </member>
+        <member name="P:Bitmex.Client.Websocket.Client.BitmexClientStreams.MarginStream">
+            <summary>
+            Stream of updates on your current account balance and margin requirements
+            </summary>
+        </member>
+        <member name="P:Bitmex.Client.Websocket.Client.BitmexClientStreams.ExecutionStream">
+            <summary>
+            Stream of all raw transactions, which includes order opening and cancellation, and order status changes
+            </summary>
+        </member>
+        <member name="P:Bitmex.Client.Websocket.Client.BitmexClientStreams.UnhandledMessageStream">
+            <summary>
+            Stream of all raw unhandled messages (that are not yet implemented)
+            </summary>
+        </member>
+        <member name="T:Bitmex.Client.Websocket.Client.BitmexWebsocketClient">
+            <summary>
+            Bitmex websocket client.
+            Use method `Send()` to subscribe to channels.
+            And `Streams` to subscribe. 
+            </summary>
+        </member>
+        <member name="M:Bitmex.Client.Websocket.Client.BitmexWebsocketClient.#ctor(Bitmex.Client.Websocket.Communicator.IBitmexCommunicator)">
+            <inheritdoc />
+        </member>
+        <member name="P:Bitmex.Client.Websocket.Client.BitmexWebsocketClient.Streams">
+            <summary>
+            Provided message streams
+            </summary>
+        </member>
+        <member name="M:Bitmex.Client.Websocket.Client.BitmexWebsocketClient.Dispose">
+            <summary>
+            Cleanup everything
+            </summary>
+        </member>
+        <member name="M:Bitmex.Client.Websocket.Client.BitmexWebsocketClient.Send``1(``0)">
+            <summary>
+            Serializes request and sends message via websocket communicator. 
+            It logs and re-throws every exception. 
+            </summary>
+            <param name="request">Request/message to be sent</param>
+        </member>
+        <member name="M:Bitmex.Client.Websocket.Client.BitmexWebsocketClient.Authenticate(System.String,System.String)">
+            <summary>
+            Sends authentication request via websocket communicator
+            </summary>
+            <param name="apiKey">Your API key</param>
+            <param name="apiSecret">Your API secret</param>
+        </member>
+        <member name="T:Bitmex.Client.Websocket.Communicator.IBitmexCommunicator">
+            <inheritdoc />
+        </member>
+        <member name="T:Bitmex.Client.Websocket.Files.BitmexFileCommunicator">
+            <summary>
+            Communicator that loads raw backtest data from file and streams
+            </summary>
+        </member>
+        <member name="T:Bitmex.Client.Websocket.Json.BitmexJsonSerializer">
+            <summary>
+            Helper class for JSON serialization
+            </summary>
+        </member>
+        <member name="M:Bitmex.Client.Websocket.Json.BitmexJsonSerializer.Deserialize``1(System.String)">
+            <summary>
+            Deserialize JSON string data by our configuration
+            </summary>
+        </member>
+        <member name="M:Bitmex.Client.Websocket.Json.BitmexJsonSerializer.Serialize(System.Object)">
+            <summary>
+            Serialize object into JSON by our configuration
+            </summary>
+            <param name="data"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bitmex.Client.Websocket.Json.BitmexJsonSerializer.ContainsValue(System.String,System.String)">
+            <summary>
+            Return true if selected value is present inside response
+            </summary>
+        </member>
+        <member name="M:Bitmex.Client.Websocket.Json.BitmexJsonSerializer.ContainsProperty(System.String,System.String)">
+            <summary>
+            Return true if selected property name is present inside response
+            </summary>
+        </member>
+        <member name="M:Bitmex.Client.Websocket.Json.BitmexJsonSerializer.ContainsRaw(System.String,System.String)">
+            <summary>
+            Return true if selected raw string is present inside response
+            </summary>
+        </member>
+        <member name="T:Bitmex.Client.Websocket.Messages.MessageBase">
+            <summary>
+            Message which is used as base for every request and response
+            </summary>
+        </member>
+        <member name="P:Bitmex.Client.Websocket.Messages.MessageBase.Op">
+            <summary>
+            Unique operation, is serialized as "op": "command"
+            </summary>
+        </member>
+        <member name="T:Bitmex.Client.Websocket.Requests.Book10SubscribeRequest">
+            <summary>
+            Subscribe to order book snapshot stream (only top 10 levels)
+            </summary>
+        </member>
+        <member name="M:Bitmex.Client.Websocket.Requests.Book10SubscribeRequest.#ctor">
+            <summary>
+            Subscribe to order book from all pairs
+            </summary>
+        </member>
+        <member name="M:Bitmex.Client.Websocket.Requests.Book10SubscribeRequest.#ctor(System.String)">
+            <summary>
+            Subscribe to order book from selected pair ('XBTUSD', etc)
+            </summary>
+        </member>
+        <member name="P:Bitmex.Client.Websocket.Requests.Book10SubscribeRequest.Topic">
+            <summary>
+            Order book L2 topic
+            </summary>
+        </member>
+        <member name="P:Bitmex.Client.Websocket.Requests.Book10SubscribeRequest.Symbol">
+            <inheritdoc />
+        </member>
+        <member name="T:Bitmex.Client.Websocket.Requests.Book25SubscribeRequest">
+            <summary>
+            Subscribe to order book L2 stream (only top 25 levels)
+            </summary>
+        </member>
+        <member name="M:Bitmex.Client.Websocket.Requests.Book25SubscribeRequest.#ctor">
+            <summary>
+            Subscribe to order book from all pairs
+            </summary>
+        </member>
+        <member name="M:Bitmex.Client.Websocket.Requests.Book25SubscribeRequest.#ctor(System.String)">
+            <summary>
+            Subscribe to order book from selected pair ('XBTUSD', etc)
+            </summary>
+        </member>
+        <member name="P:Bitmex.Client.Websocket.Requests.Book25SubscribeRequest.Topic">
+            <summary>
+            Order book L2 topic
+            </summary>
+        </member>
+        <member name="P:Bitmex.Client.Websocket.Requests.Book25SubscribeRequest.Symbol">
+            <inheritdoc />
+        </member>
+        <member name="T:Bitmex.Client.Websocket.Requests.BookSubscribeRequest">
+            <summary>
+            Subscribe to order book L2 stream
+            </summary>
+        </member>
+        <member name="M:Bitmex.Client.Websocket.Requests.BookSubscribeRequest.#ctor">
+            <summary>
+            Subscribe to order book from all pairs
+            </summary>
+        </member>
+        <member name="M:Bitmex.Client.Websocket.Requests.BookSubscribeRequest.#ctor(System.String)">
+            <summary>
+            Subscribe to order book from selected pair ('XBTUSD', etc)
+            </summary>
+        </member>
+        <member name="P:Bitmex.Client.Websocket.Requests.BookSubscribeRequest.Topic">
+            <summary>
+            Order book L2 topic
+            </summary>
+        </member>
+        <member name="P:Bitmex.Client.Websocket.Requests.BookSubscribeRequest.Symbol">
+            <inheritdoc />
+        </member>
+        <member name="T:Bitmex.Client.Websocket.Requests.FundingsSubscribeRequest">
+            <summary>
+            Subscribe to trades stream
+            </summary>
+        </member>
+        <member name="M:Bitmex.Client.Websocket.Requests.FundingsSubscribeRequest.#ctor">
+            <summary>
+            Subscribe to all fundings
+            </summary>
+        </member>
+        <member name="M:Bitmex.Client.Websocket.Requests.FundingsSubscribeRequest.#ctor(System.String)">
+            <summary>
+            Subscribe to fundings for selected pair, e.g. 'XBTUSD'
+            </summary>
+        </member>
+        <member name="P:Bitmex.Client.Websocket.Requests.FundingsSubscribeRequest.Topic">
+            <summary>
+            Funding topic
+            </summary>
+        </member>
+        <member name="M:Bitmex.Client.Websocket.Requests.InstrumentSubscribeRequest.#ctor">
+            <summary>
+            Subscribe to instrument updates including turnover and bid/ask from all pairs
+            </summary>
+        </member>
+        <member name="M:Bitmex.Client.Websocket.Requests.InstrumentSubscribeRequest.#ctor(System.String)">
+            <summary>
+            Subscribe to instrument updates including turnover and bid/ask from selected pair ('XBTUSD', etc)
+            </summary>
+        </member>
+        <member name="T:Bitmex.Client.Websocket.Requests.PingRequest">
+            <summary>
+            Raw ping request to get pong response
+            </summary>
+        </member>
+        <member name="P:Bitmex.Client.Websocket.Requests.PingRequest.Operation">
+            <inheritdoc />
+        </member>
+        <member name="P:Bitmex.Client.Websocket.Requests.PingRequest.IsRaw">
+            <inheritdoc />
+        </member>
+        <member name="M:Bitmex.Client.Websocket.Requests.QuoteSubscribeRequest.#ctor">
+            <summary>
+            Subscribe to quote (top level of the book) from all pairs
+            </summary>
+        </member>
+        <member name="M:Bitmex.Client.Websocket.Requests.QuoteSubscribeRequest.#ctor(System.String)">
+            <summary>
+            Subscribe to quote (top level of the book) from selected pair ('XBTUSD', etc)
+            </summary>
+        </member>
+        <member name="T:Bitmex.Client.Websocket.Requests.RequestBase">
+            <summary>
+            Base class for every request
+            </summary>
+        </member>
+        <member name="P:Bitmex.Client.Websocket.Requests.RequestBase.Op">
+            <inheritdoc />
+        </member>
+        <member name="P:Bitmex.Client.Websocket.Requests.RequestBase.Operation">
+            <summary>
+            Same as 'Op' property, but more readable and overriden by descendants
+            </summary>
+        </member>
+        <member name="P:Bitmex.Client.Websocket.Requests.RequestBase.OperationString">
+            <summary>
+            Operation as string for Raw requests (for example: ping)
+            </summary>
+        </member>
+        <member name="P:Bitmex.Client.Websocket.Requests.RequestBase.IsRaw">
+            <summary>
+            If is set to true, whole request is not serialized as JSON but only 'OperationString' is used
+            </summary>
+        </member>
+        <member name="M:Bitmex.Client.Websocket.Requests.SettlementSubscribeRequest.#ctor">
+            <summary>
+            Subscribe to all settlements
+            </summary>
+        </member>
+        <member name="M:Bitmex.Client.Websocket.Requests.SettlementSubscribeRequest.#ctor(System.String)">
+            <summary>
+            Subscribe to settlements for selected pair ('XBTUSD', etc)
+            </summary>
+        </member>
+        <member name="T:Bitmex.Client.Websocket.Requests.SubscribeRequestBase">
+            <summary>
+            Base class for every subscribe and unsubscribe request
+            </summary>
+        </member>
+        <member name="P:Bitmex.Client.Websocket.Requests.SubscribeRequestBase.Operation">
+            <inheritdoc />
+        </member>
+        <member name="P:Bitmex.Client.Websocket.Requests.SubscribeRequestBase.Args">
+            <summary>
+            Subscription arguments array which is serialized
+            </summary>
+        </member>
+        <member name="P:Bitmex.Client.Websocket.Requests.SubscribeRequestBase.Topic">
+            <summary>
+            Target subscription topic
+            </summary>
+        </member>
+        <member name="P:Bitmex.Client.Websocket.Requests.SubscribeRequestBase.Symbol">
+            <summary>
+            Target subscription pair (could be null, then it will subscribe to everything)
+            </summary>
+        </member>
+        <member name="P:Bitmex.Client.Websocket.Requests.SubscribeRequestBase.IsUnsubscribe">
+            <summary>
+            Set true if you want to unsubscribe from the stream
+            </summary>
+        </member>
+        <member name="M:Bitmex.Client.Websocket.Requests.TradeBinSubscribeRequest.#ctor">
+            <summary>
+            Subscribe to all trades
+            </summary>
+        </member>
+        <member name="M:Bitmex.Client.Websocket.Requests.TradeBinSubscribeRequest.#ctor(System.String,System.String)">
+            <summary>
+            Subscribe to trades for selected pair ('XBTUSD', etc)
+            </summary>
+        </member>
+        <member name="T:Bitmex.Client.Websocket.Requests.TradesSubscribeRequest">
+            <summary>
+            Subscribe to trades stream
+            </summary>
+        </member>
+        <member name="M:Bitmex.Client.Websocket.Requests.TradesSubscribeRequest.#ctor">
+            <summary>
+            Subscribe to all trades
+            </summary>
+        </member>
+        <member name="M:Bitmex.Client.Websocket.Requests.TradesSubscribeRequest.#ctor(System.String)">
+            <summary>
+            Subscribe to trades for selected pair ('XBTUSD', etc)
+            </summary>
+        </member>
+        <member name="P:Bitmex.Client.Websocket.Requests.TradesSubscribeRequest.Topic">
+            <summary>
+            Trade topic
+            </summary>
+        </member>
+        <member name="P:Bitmex.Client.Websocket.Requests.TradesSubscribeRequest.Symbol">
+            <inheritdoc />
+        </member>
+        <member name="T:Bitmex.Client.Websocket.Responses.Books.BookLevel">
+            <summary>
+            The state of the Bitmex order book
+            </summary>
+        </member>
+        <member name="P:Bitmex.Client.Websocket.Responses.Books.BookLevel.Id">
+            <summary>
+            Order book level id (combination of price and symbol)
+            </summary>
+        </member>
+        <member name="P:Bitmex.Client.Websocket.Responses.Books.BookLevel.Symbol">
+            <summary>
+            Target symbol
+            </summary>
+        </member>
+        <member name="P:Bitmex.Client.Websocket.Responses.Books.BookLevel.Side">
+            <summary>
+            Level side
+            </summary>
+        </member>
+        <member name="P:Bitmex.Client.Websocket.Responses.Books.BookLevel.Size">
+            <summary>
+            Available only for 'partial', 'insert' and 'update' action
+            </summary>
+        </member>
+        <member name="P:Bitmex.Client.Websocket.Responses.Books.BookLevel.Price">
+            <summary>
+            Available only for 'partial' and 'insert' action, use Id otherwise
+            </summary>
+        </member>
+        <member name="T:Bitmex.Client.Websocket.Responses.Books.BookResponse">
+            <summary>
+            Order book L2 diff response
+            </summary>
+        </member>
+        <member name="P:Bitmex.Client.Websocket.Responses.Books.BookResponse.Op">
+            <inheritdoc />
+        </member>
+        <member name="P:Bitmex.Client.Websocket.Responses.Books.BookResponse.Data">
+            <summary>
+            Order book updates
+            </summary>
+        </member>
+        <member name="T:Bitmex.Client.Websocket.Responses.Fundings.FundingResponse">
+            <summary>
+            Fundings response
+            </summary>
+        </member>
+        <member name="P:Bitmex.Client.Websocket.Responses.Fundings.FundingResponse.Op">
+            <summary>
+            Operation type
+            </summary>
+        </member>
+        <member name="P:Bitmex.Client.Websocket.Responses.Fundings.FundingResponse.Data">
+            <summary>
+            All latest fundings
+            </summary>
+        </member>
+        <member name="T:Bitmex.Client.Websocket.Responses.Instruments.Instrument">
+            <summary>
+            Trade-able Contracts, Indices, and History
+            </summary>
+        </member>
+        <member name="P:Bitmex.Client.Websocket.Responses.Instruments.InstrumentResponse.Op">
+            <inheritdoc />
+        </member>
+        <member name="T:Bitmex.Client.Websocket.Responses.Margins.Margin">
+            <summary>
+            Information about your margin
+            </summary>
+        </member>
+        <member name="P:Bitmex.Client.Websocket.Responses.Margins.Margin.Account">
+            <summary>
+            Account identification
+            </summary>
+        </member>
+        <member name="P:Bitmex.Client.Websocket.Responses.Margins.Margin.Currency">
+            <summary>
+            Current `Amount` currency, for example `XBt` which is satoshi
+            </summary>
+        </member>
+        <member name="P:Bitmex.Client.Websocket.Responses.Margins.Margin.Amount">
+            <summary>
+            Current amount in satoshis.
+            Use `BitmexConverter` to convert value into BTC. 
+            </summary>
+        </member>
+        <member name="P:Bitmex.Client.Websocket.Responses.Margins.Margin.WalletBalance">
+            <summary>
+            Current wallet balance in satoshis.
+            Use `BitmexConverter` to convert value into BTC. 
+            </summary>
+        </member>
+        <member name="P:Bitmex.Client.Websocket.Responses.Margins.Margin.MarginBalance">
+            <summary>
+            Current margin balance in satoshis.
+            Use `BitmexConverter` to convert value into BTC. 
+            </summary>
+        </member>
+        <member name="P:Bitmex.Client.Websocket.Responses.Margins.Margin.AvailableMargin">
+            <summary>
+            Current available margin balance in satoshis.
+            Use `BitmexConverter` to convert value into BTC. 
+            </summary>
+        </member>
+        <member name="T:Bitmex.Client.Websocket.Responses.Positions.Position">
+            <summary>
+            Information about your positions
+            </summary>
+        </member>
+        <member name="P:Bitmex.Client.Websocket.Responses.Positions.Position.Account">
+            <summary>
+            Account identification
+            </summary>
+        </member>
+        <member name="P:Bitmex.Client.Websocket.Responses.Positions.Position.Symbol">
+            <summary>
+            Target symbol (XBT, ETH, etc)
+            </summary>
+        </member>
+        <member name="P:Bitmex.Client.Websocket.Responses.Positions.Position.Currency">
+            <summary>
+            Current `Amount` currency, for example `XBt` which is satoshi
+            </summary>
+        </member>
+        <member name="T:Bitmex.Client.Websocket.Responses.Quotes.Quote">
+            <summary>
+            Top level of the Bitmex order book
+            </summary>
+        </member>
+        <member name="T:Bitmex.Client.Websocket.Responses.ResponseBase">
+            <summary>
+            Base message for every response
+            </summary>
+        </member>
+        <member name="P:Bitmex.Client.Websocket.Responses.ResponseBase.Action">
+            <summary>
+            The type of the message. Types:
+            'partial'; This is a table image, replace your data entirely.
+            'update': Update a single row.
+            'insert': Insert a new row.
+            'delete': Delete a row.
+            </summary>
+        </member>
+        <member name="P:Bitmex.Client.Websocket.Responses.ResponseBase.Table">
+            <summary>
+            Table name / Subscription topic.
+            Could be "trade", "order", "instrument", etc.
+            </summary>
+        </member>
+        <member name="P:Bitmex.Client.Websocket.Responses.ResponseBase.Keys">
+            <summary>
+            Attribute names that are guaranteed to be unique per object.
+            If more than one is provided, the key is composite.
+            Use these key names to uniquely identify rows. Key columns are guaranteed
+            to be present on all data received.
+            </summary>
+        </member>
+        <member name="P:Bitmex.Client.Websocket.Responses.ResponseBase.Types">
+            <summary>
+            This lists the shape of the table. The possible types:
+            "symbol" - In most languages this is equal to "string"
+            "guid"
+            "timestamp"
+            "timespan"
+            "float"
+            "long"
+            "integer"
+            "boolean"
+            </summary>
+        </member>
+        <member name="P:Bitmex.Client.Websocket.Responses.ResponseBase.ForeignKeys">
+            <summary>
+            This lists key relationships with other tables.
+            For example, `quote`'s foreign key is {"symbol": "instrument"}
+            </summary>
+        </member>
+        <member name="P:Bitmex.Client.Websocket.Responses.ResponseBase.Attributes">
+            <summary>
+            These are internal fields that indicate how responses are sorted and grouped.
+            </summary>
+        </member>
+        <member name="P:Bitmex.Client.Websocket.Responses.ResponseBase.Filter">
+            <summary>
+            When multiple subscriptions are active to the same table, use the `filter` to correlate which datagram
+            belongs to which subscription, as the `table` property will not contain the subscription's symbol.
+            </summary>
+        </member>
+        <member name="T:Bitmex.Client.Websocket.Responses.SubscribeResponse">
+            <summary>
+            Response for every subscribe and unsubscribe event
+            </summary>
+        </member>
+        <member name="P:Bitmex.Client.Websocket.Responses.SubscribeResponse.Op">
+            <inheritdoc />
+        </member>
+        <member name="P:Bitmex.Client.Websocket.Responses.SubscribeResponse.Subscribe">
+            <summary>
+            Subscribed topics
+            </summary>
+        </member>
+        <member name="P:Bitmex.Client.Websocket.Responses.SubscribeResponse.Unsubscribe">
+            <summary>
+            Unsubscribed topics
+            </summary>
+        </member>
+        <member name="P:Bitmex.Client.Websocket.Responses.SubscribeResponse.Success">
+            <summary>
+            Returns true if subscribe or unsubscribe succeed
+            </summary>
+        </member>
+        <member name="P:Bitmex.Client.Websocket.Responses.SubscribeResponse.IsSubscription">
+            <summary>
+            Returns true if it is subscription event
+            </summary>
+        </member>
+        <member name="T:Bitmex.Client.Websocket.Responses.TradeBins.TradeBinResponse">
+            <summary>
+            Trades bin response, contains all trades executed in a selected time range
+            </summary>
+        </member>
+        <member name="P:Bitmex.Client.Websocket.Responses.TradeBins.TradeBinResponse.Op">
+            <summary>
+            Operation type
+            </summary>
+        </member>
+        <member name="P:Bitmex.Client.Websocket.Responses.TradeBins.TradeBinResponse.Data">
+            <summary>
+            Trades data
+            </summary>
+        </member>
+        <member name="P:Bitmex.Client.Websocket.Responses.TradeBins.TradeBinResponse.Size">
+            <summary>
+            Size of the bin ('1min', '5min', '1h', etc)
+            </summary>
+        </member>
+        <member name="T:Bitmex.Client.Websocket.Responses.Trades.TradeResponse">
+            <summary>
+            Trades response
+            </summary>
+        </member>
+        <member name="P:Bitmex.Client.Websocket.Responses.Trades.TradeResponse.Op">
+            <summary>
+            Operation type
+            </summary>
+        </member>
+        <member name="P:Bitmex.Client.Websocket.Responses.Trades.TradeResponse.Data">
+            <summary>
+            All latest trades
+            </summary>
+        </member>
+        <member name="T:Bitmex.Client.Websocket.Responses.Wallets.Wallet">
+            <summary>
+            Information about your wallet (balance, changes, address, etc)
+            </summary>
+        </member>
+        <member name="P:Bitmex.Client.Websocket.Responses.Wallets.Wallet.Account">
+            <summary>
+            Account identification
+            </summary>
+        </member>
+        <member name="P:Bitmex.Client.Websocket.Responses.Wallets.Wallet.Currency">
+            <summary>
+            Current `Amount` currency, for example `XBt` which is satoshi
+            </summary>
+        </member>
+        <member name="P:Bitmex.Client.Websocket.Responses.Wallets.Wallet.Amount">
+            <summary>
+            Current balance in satoshis (call `BalanceBtc` property to get BTC representation)
+            </summary>
+        </member>
+        <member name="P:Bitmex.Client.Websocket.Responses.Wallets.Wallet.BalanceBtc">
+            <summary>
+            Converted satoshis 'Amount' into double BTC representation
+            </summary>
+        </member>
+        <member name="P:Bitmex.Client.Websocket.Responses.Wallets.Wallet.BalanceBtcDecimal">
+            <summary>
+            Converted satoshis 'Amount' into decimal BTC representation
+            </summary>
+        </member>
+        <member name="T:Bitmex.Client.Websocket.Utils.BitmexConverter">
+            <summary>
+            Utility class to help with converting Satoshis, miliBTC into BTC
+            </summary>
+        </member>
+        <member name="M:Bitmex.Client.Websocket.Utils.BitmexConverter.ConvertToBtc(System.String,System.Double)">
+            <summary>
+            Convert double value into BTC, according to from currency.
+            For example: 'XBt' will be converted like value/10^8
+            </summary>
+            <param name="from">Currency (XBt, XBT, BTC, etc)</param>
+            <param name="value">Original value</param>
+            <returns>Converted value</returns>
+        </member>
+        <member name="M:Bitmex.Client.Websocket.Utils.BitmexConverter.ConvertToBtc(System.String,System.Decimal)">
+            <summary>
+            Convert decimal value into BTC, according to from currency.
+            For example: 'XBt' will be converted like value/10^8
+            </summary>
+            <param name="from">Currency (XBt, XBT, BTC, etc)</param>
+            <param name="value">Original value</param>
+            <returns>Converted value</returns>
+        </member>
+        <member name="M:Bitmex.Client.Websocket.Utils.BitmexConverter.ConvertToBtc(System.String,System.Int64)">
+            <summary>
+            Convert long value into BTC, according to from currency.
+            For example: 'XBt' will be converted like value/10^8
+            </summary>
+            <param name="from">Currency (XBt, XBT, BTC, etc)</param>
+            <param name="value">Original value</param>
+            <returns>Converted value</returns>
+        </member>
+        <member name="M:Bitmex.Client.Websocket.Utils.BitmexConverter.ConvertToBtcDecimal(System.String,System.Int64)">
+            <summary>
+            Convert long value into BTC, according to from currency.
+            For example: 'XBt' will be converted like value/10^8
+            </summary>
+            <param name="from">Currency (XBt, XBT, BTC, etc)</param>
+            <param name="value">Original value</param>
+            <returns>Converted value</returns>
+        </member>
+        <member name="M:Bitmex.Client.Websocket.Utils.BitmexConverter.ConvertFromSatoshiToBtc(System.Int64)">
+            <summary>
+            Convert Satoshis into BTC. It will divide value by 10^8
+            </summary>
+        </member>
+        <member name="M:Bitmex.Client.Websocket.Utils.BitmexConverter.ConvertFromSatoshiToBtc(System.Double)">
+            <summary>
+            Convert Satoshis into BTC. It will divide value by 10^8
+            </summary>
+        </member>
+        <member name="M:Bitmex.Client.Websocket.Utils.BitmexConverter.ConvertFromSatoshiToBtcDecimal(System.Int64)">
+            <summary>
+            Convert Satoshis into BTC. It will divide value by 10^8
+            </summary>
+        </member>
+        <member name="M:Bitmex.Client.Websocket.Utils.BitmexConverter.ConvertFromSatoshiToBtcDecimal(System.Decimal)">
+            <summary>
+            Convert Satoshis into BTC. It will divide value by 10^8
+            </summary>
+        </member>
+        <member name="M:Bitmex.Client.Websocket.Validations.BmxValidations.ValidateInput(System.String,System.String)">
+            <summary>
+            It throws <exception cref="T:Bitmex.Client.Websocket.Exceptions.BitmexBadInputException"></exception> if value is null or empty/white spaces
+            </summary>
+            <param name="value">The value to be validated</param>
+            <param name="name">Input parameter name</param>
+        </member>
+        <member name="M:Bitmex.Client.Websocket.Validations.BmxValidations.ValidateInput``1(``0,System.String)">
+            <summary>
+            It throws <exception cref="T:Bitmex.Client.Websocket.Exceptions.BitmexBadInputException"></exception> if value is null
+            </summary>
+            <param name="value">The value to be validated</param>
+            <param name="name">Input parameter name</param>
+        </member>
+        <member name="M:Bitmex.Client.Websocket.Validations.BmxValidations.ValidateInputCollection``1(System.Collections.Generic.IEnumerable{``0},System.String)">
+            <summary>
+            It throws <exception cref="T:Bitmex.Client.Websocket.Exceptions.BitmexBadInputException"></exception> if collection is null or collection is empty
+            </summary>
+            <param name="collection">The collection to be validated</param>
+            <param name="name">Input parameter name</param>
+        </member>
+        <member name="M:Bitmex.Client.Websocket.Validations.BmxValidations.ValidateInput(System.Int32,System.String,System.Int32,System.Int32)">
+            <summary>
+            It throws <exception cref="T:Bitmex.Client.Websocket.Exceptions.BitmexBadInputException"></exception> if value is not in specified range
+            </summary>
+            <param name="value">The value to be validated</param>
+            <param name="name">Input parameter name</param>
+            <param name="minValue">Minimal value of input</param>
+            <param name="maxValue">Maximum value of input</param>
+        </member>
+        <member name="M:Bitmex.Client.Websocket.Validations.BmxValidations.ValidateInput(System.Int64,System.String,System.Int64,System.Int64)">
+            <summary>
+            It throws <exception cref="T:Bitmex.Client.Websocket.Exceptions.BitmexBadInputException"></exception> if value is not in specified range
+            </summary>
+            <param name="value">The value to be validated</param>
+            <param name="name">Input parameter name</param>
+            <param name="minValue">Minimal value of input</param>
+            <param name="maxValue">Maximum value of input</param>
+        </member>
+        <member name="M:Bitmex.Client.Websocket.Validations.BmxValidations.ValidateInput(System.Double,System.String,System.Double,System.Double)">
+            <summary>
+            It throws <exception cref="T:Bitmex.Client.Websocket.Exceptions.BitmexBadInputException"></exception> if value is not in specified range
+            </summary>
+            <param name="value">The value to be validated</param>
+            <param name="name">Input parameter name</param>
+            <param name="minValue">Minimal value of input</param>
+            <param name="maxValue">Maximum value of input</param>
+        </member>
+        <member name="T:Bitmex.Client.Websocket.Websockets.BitmexWebsocketCommunicator">
+            <inheritdoc cref="T:Websocket.Client.WebsocketClient" />
+        </member>
+        <member name="M:Bitmex.Client.Websocket.Websockets.BitmexWebsocketCommunicator.#ctor(System.Uri,System.Func{System.Net.WebSockets.ClientWebSocket})">
+            <inheritdoc />
+        </member>
+        <member name="T:Bitmex.Client.Websocket.Logging.ILog">
+            <summary>
+                Simple interface that represent a logger.
+            </summary>
+        </member>
+        <member name="M:Bitmex.Client.Websocket.Logging.ILog.Log(Bitmex.Client.Websocket.Logging.LogLevel,System.Func{System.String},System.Exception,System.Object[])">
+            <summary>
+                Log a message the specified log level.
+            </summary>
+            <param name="logLevel">The log level.</param>
+            <param name="messageFunc">The message function.</param>
+            <param name="exception">An optional exception.</param>
+            <param name="formatParameters">Optional format parameters for the message generated by the messagefunc. </param>
+            <returns>true if the message was logged. Otherwise false.</returns>
+            <remarks>
+                Note to implementers: the message func should not be called if the loglevel is not enabled
+                so as not to incur performance penalties.
+                To check IsEnabled call Log with only LogLevel and check the return value, no event will be written.
+            </remarks>
+        </member>
+        <member name="T:Bitmex.Client.Websocket.Logging.ILogProvider">
+            <summary>
+            Represents a way to get a <see cref="T:Bitmex.Client.Websocket.Logging.ILog"/>
+            </summary>
+        </member>
+        <member name="M:Bitmex.Client.Websocket.Logging.ILogProvider.GetLogger(System.String)">
+            <summary>
+            Gets the specified named logger.
+            </summary>
+            <param name="name">Name of the logger.</param>
+            <returns>The logger reference.</returns>
+        </member>
+        <member name="M:Bitmex.Client.Websocket.Logging.ILogProvider.OpenNestedContext(System.String)">
+            <summary>
+            Opens a nested diagnostics context. Not supported in EntLib logging.
+            </summary>
+            <param name="message">The message to add to the diagnostics context.</param>
+            <returns>A disposable that when disposed removes the message from the context.</returns>
+        </member>
+        <member name="M:Bitmex.Client.Websocket.Logging.ILogProvider.OpenMappedContext(System.String,System.Object,System.Boolean)">
+            <summary>
+            Opens a mapped diagnostics context. Not supported in EntLib logging.
+            </summary>
+            <param name="key">A key.</param>
+            <param name="value">A value.</param>
+            <param name="destructure">Determines whether to call the destructor or not.</param>
+            <returns>A disposable that when disposed removes the map from the context.</returns>
+        </member>
+        <member name="T:Bitmex.Client.Websocket.Logging.LogExtensions">
+            <summary>
+                Extension methods for the <see cref="T:Bitmex.Client.Websocket.Logging.ILog"/> interface.
+            </summary>
+        </member>
+        <member name="M:Bitmex.Client.Websocket.Logging.LogExtensions.IsDebugEnabled(Bitmex.Client.Websocket.Logging.ILog)">
+            <summary>
+                Check if the <see cref="F:Bitmex.Client.Websocket.Logging.LogLevel.Debug"/> log level is enabled.
+            </summary>
+            <param name="logger">The <see cref="T:Bitmex.Client.Websocket.Logging.ILog"/> to check with.</param>
+            <returns>True if the log level is enabled; false otherwise.</returns>
+        </member>
+        <member name="M:Bitmex.Client.Websocket.Logging.LogExtensions.IsErrorEnabled(Bitmex.Client.Websocket.Logging.ILog)">
+            <summary>
+                Check if the <see cref="F:Bitmex.Client.Websocket.Logging.LogLevel.Error"/> log level is enabled.
+            </summary>
+            <param name="logger">The <see cref="T:Bitmex.Client.Websocket.Logging.ILog"/> to check with.</param>
+            <returns>True if the log level is enabled; false otherwise.</returns>
+        </member>
+        <member name="M:Bitmex.Client.Websocket.Logging.LogExtensions.IsFatalEnabled(Bitmex.Client.Websocket.Logging.ILog)">
+            <summary>
+                Check if the <see cref="F:Bitmex.Client.Websocket.Logging.LogLevel.Fatal"/> log level is enabled.
+            </summary>
+            <param name="logger">The <see cref="T:Bitmex.Client.Websocket.Logging.ILog"/> to check with.</param>
+            <returns>True if the log level is enabled; false otherwise.</returns>
+        </member>
+        <member name="M:Bitmex.Client.Websocket.Logging.LogExtensions.IsInfoEnabled(Bitmex.Client.Websocket.Logging.ILog)">
+            <summary>
+                Check if the <see cref="F:Bitmex.Client.Websocket.Logging.LogLevel.Info"/> log level is enabled.
+            </summary>
+            <param name="logger">The <see cref="T:Bitmex.Client.Websocket.Logging.ILog"/> to check with.</param>
+            <returns>True if the log level is enabled; false otherwise.</returns>
+        </member>
+        <member name="M:Bitmex.Client.Websocket.Logging.LogExtensions.IsTraceEnabled(Bitmex.Client.Websocket.Logging.ILog)">
+            <summary>
+                Check if the <see cref="F:Bitmex.Client.Websocket.Logging.LogLevel.Trace"/> log level is enabled.
+            </summary>
+            <param name="logger">The <see cref="T:Bitmex.Client.Websocket.Logging.ILog"/> to check with.</param>
+            <returns>True if the log level is enabled; false otherwise.</returns>
+        </member>
+        <member name="M:Bitmex.Client.Websocket.Logging.LogExtensions.IsWarnEnabled(Bitmex.Client.Websocket.Logging.ILog)">
+            <summary>
+                Check if the <see cref="F:Bitmex.Client.Websocket.Logging.LogLevel.Warn"/> log level is enabled.
+            </summary>
+            <param name="logger">The <see cref="T:Bitmex.Client.Websocket.Logging.ILog"/> to check with.</param>
+            <returns>True if the log level is enabled; false otherwise.</returns>
+        </member>
+        <member name="M:Bitmex.Client.Websocket.Logging.LogExtensions.Debug(Bitmex.Client.Websocket.Logging.ILog,System.Func{System.String})">
+            <summary>
+                Logs a message at the <see cref="F:Bitmex.Client.Websocket.Logging.LogLevel.Debug"/> log level, if enabled.
+            </summary>
+            <param name="logger">The <see cref="T:Bitmex.Client.Websocket.Logging.ILog"/> to use.</param>
+            <param name="messageFunc">The message function.</param>
+        </member>
+        <member name="M:Bitmex.Client.Websocket.Logging.LogExtensions.Debug(Bitmex.Client.Websocket.Logging.ILog,System.String)">
+            <summary>
+                Logs a message at the <see cref="F:Bitmex.Client.Websocket.Logging.LogLevel.Debug"/> log level, if enabled.
+            </summary>
+            <param name="logger">The <see cref="T:Bitmex.Client.Websocket.Logging.ILog"/> to use.</param>
+            <param name="message">The message.</param>
+        </member>
+        <member name="M:Bitmex.Client.Websocket.Logging.LogExtensions.Debug(Bitmex.Client.Websocket.Logging.ILog,System.String,System.Object[])">
+            <summary>
+                Logs a message at the <see cref="F:Bitmex.Client.Websocket.Logging.LogLevel.Debug"/> log level, if enabled.
+            </summary>
+            <param name="logger">The <see cref="T:Bitmex.Client.Websocket.Logging.ILog"/> to use.</param>
+            <param name="message">The message.</param>
+            <param name="args">Optional format parameters for the message.</param>
+        </member>
+        <member name="M:Bitmex.Client.Websocket.Logging.LogExtensions.Debug(Bitmex.Client.Websocket.Logging.ILog,System.Exception,System.String,System.Object[])">
+            <summary>
+                Logs an exception at the <see cref="F:Bitmex.Client.Websocket.Logging.LogLevel.Debug"/> log level, if enabled.
+            </summary>
+            <param name="logger">The <see cref="T:Bitmex.Client.Websocket.Logging.ILog"/> to use.</param>
+            <param name="exception">The exception.</param>
+            <param name="message">The message.</param>
+            <param name="args">Optional format parameters for the message.</param>
+        </member>
+        <member name="M:Bitmex.Client.Websocket.Logging.LogExtensions.DebugFormat(Bitmex.Client.Websocket.Logging.ILog,System.String,System.Object[])">
+            <summary>
+                Logs a message at the <see cref="F:Bitmex.Client.Websocket.Logging.LogLevel.Debug"/> log level, if enabled.
+            </summary>
+            <param name="logger">The <see cref="T:Bitmex.Client.Websocket.Logging.ILog"/> to use.</param>
+            <param name="message">The message.</param>
+            <param name="args">Optional format parameters for the message.</param>
+        </member>
+        <member name="M:Bitmex.Client.Websocket.Logging.LogExtensions.DebugException(Bitmex.Client.Websocket.Logging.ILog,System.String,System.Exception)">
+            <summary>
+                Logs an exception at the <see cref="F:Bitmex.Client.Websocket.Logging.LogLevel.Debug"/> log level, if enabled.
+            </summary>
+            <param name="logger">The <see cref="T:Bitmex.Client.Websocket.Logging.ILog"/> to use.</param>
+            <param name="exception">The exception.</param>
+            <param name="message">The message.</param>
+        </member>
+        <member name="M:Bitmex.Client.Websocket.Logging.LogExtensions.DebugException(Bitmex.Client.Websocket.Logging.ILog,System.String,System.Exception,System.Object[])">
+            <summary>
+                Logs an exception at the <see cref="F:Bitmex.Client.Websocket.Logging.LogLevel.Debug"/> log level, if enabled.
+            </summary>
+            <param name="logger">The <see cref="T:Bitmex.Client.Websocket.Logging.ILog"/> to use.</param>
+            <param name="exception">The exception.</param>
+            <param name="message">The message.</param>
+            <param name="args">Optional format parameters for the message.</param>
+        </member>
+        <member name="M:Bitmex.Client.Websocket.Logging.LogExtensions.Error(Bitmex.Client.Websocket.Logging.ILog,System.Func{System.String})">
+            <summary>
+                Logs a message at the <see cref="F:Bitmex.Client.Websocket.Logging.LogLevel.Error"/> log level, if enabled.
+            </summary>
+            <param name="logger">The <see cref="T:Bitmex.Client.Websocket.Logging.ILog"/> to use.</param>
+            <param name="messageFunc">The message function.</param>
+        </member>
+        <member name="M:Bitmex.Client.Websocket.Logging.LogExtensions.Error(Bitmex.Client.Websocket.Logging.ILog,System.String)">
+            <summary>
+                Logs a message at the <see cref="F:Bitmex.Client.Websocket.Logging.LogLevel.Error"/> log level, if enabled.
+            </summary>
+            <param name="logger">The <see cref="T:Bitmex.Client.Websocket.Logging.ILog"/> to use.</param>
+            <param name="message">The message.</param>
+        </member>
+        <member name="M:Bitmex.Client.Websocket.Logging.LogExtensions.Error(Bitmex.Client.Websocket.Logging.ILog,System.String,System.Object[])">
+            <summary>
+                Logs a message at the <see cref="F:Bitmex.Client.Websocket.Logging.LogLevel.Error"/> log level, if enabled.
+            </summary>
+            <param name="logger">The <see cref="T:Bitmex.Client.Websocket.Logging.ILog"/> to use.</param>
+            <param name="message">The message.</param>
+            <param name="args">Optional format parameters for the message.</param>
+        </member>
+        <member name="M:Bitmex.Client.Websocket.Logging.LogExtensions.Error(Bitmex.Client.Websocket.Logging.ILog,System.Exception,System.String,System.Object[])">
+            <summary>
+                Logs an exception at the <see cref="F:Bitmex.Client.Websocket.Logging.LogLevel.Error"/> log level, if enabled.
+            </summary>
+            <param name="logger">The <see cref="T:Bitmex.Client.Websocket.Logging.ILog"/> to use.</param>
+            <param name="exception">The exception.</param>
+            <param name="message">The message.</param>
+            <param name="args">Optional format parameters for the message.</param>
+        </member>
+        <member name="M:Bitmex.Client.Websocket.Logging.LogExtensions.ErrorFormat(Bitmex.Client.Websocket.Logging.ILog,System.String,System.Object[])">
+            <summary>
+                Logs a message at the <see cref="F:Bitmex.Client.Websocket.Logging.LogLevel.Error"/> log level, if enabled.
+            </summary>
+            <param name="logger">The <see cref="T:Bitmex.Client.Websocket.Logging.ILog"/> to use.</param>
+            <param name="message">The message.</param>
+            <param name="args">Optional format parameters for the message.</param>
+        </member>
+        <member name="M:Bitmex.Client.Websocket.Logging.LogExtensions.ErrorException(Bitmex.Client.Websocket.Logging.ILog,System.String,System.Exception,System.Object[])">
+            <summary>
+                Logs an exception at the <see cref="F:Bitmex.Client.Websocket.Logging.LogLevel.Error"/> log level, if enabled.
+            </summary>
+            <param name="logger">The <see cref="T:Bitmex.Client.Websocket.Logging.ILog"/> to use.</param>
+            <param name="exception">The exception.</param>
+            <param name="message">The message.</param>
+            <param name="formatParams">Optional format parameters for the message.</param>
+        </member>
+        <member name="M:Bitmex.Client.Websocket.Logging.LogExtensions.Fatal(Bitmex.Client.Websocket.Logging.ILog,System.Func{System.String})">
+            <summary>
+                Logs a message at the <see cref="F:Bitmex.Client.Websocket.Logging.LogLevel.Fatal"/> log level, if enabled.
+            </summary>
+            <param name="logger">The <see cref="T:Bitmex.Client.Websocket.Logging.ILog"/> to use.</param>
+            <param name="messageFunc">The message function.</param>
+        </member>
+        <member name="M:Bitmex.Client.Websocket.Logging.LogExtensions.Fatal(Bitmex.Client.Websocket.Logging.ILog,System.String)">
+            <summary>
+                Logs a message at the <see cref="F:Bitmex.Client.Websocket.Logging.LogLevel.Fatal"/> log level, if enabled.
+            </summary>
+            <param name="logger">The <see cref="T:Bitmex.Client.Websocket.Logging.ILog"/> to use.</param>
+            <param name="message">The message.</param>
+        </member>
+        <member name="M:Bitmex.Client.Websocket.Logging.LogExtensions.Fatal(Bitmex.Client.Websocket.Logging.ILog,System.String,System.Object[])">
+            <summary>
+                Logs a message at the <see cref="F:Bitmex.Client.Websocket.Logging.LogLevel.Fatal"/> log level, if enabled.
+            </summary>
+            <param name="logger">The <see cref="T:Bitmex.Client.Websocket.Logging.ILog"/> to use.</param>
+            <param name="message">The message.</param>
+            <param name="args">Optional format parameters for the message.</param>
+        </member>
+        <member name="M:Bitmex.Client.Websocket.Logging.LogExtensions.Fatal(Bitmex.Client.Websocket.Logging.ILog,System.Exception,System.String,System.Object[])">
+            <summary>
+                Logs an exception at the <see cref="F:Bitmex.Client.Websocket.Logging.LogLevel.Fatal"/> log level, if enabled.
+            </summary>
+            <param name="logger">The <see cref="T:Bitmex.Client.Websocket.Logging.ILog"/> to use.</param>
+            <param name="exception">The exception.</param>
+            <param name="message">The message.</param>
+            <param name="args">Optional format parameters for the message.</param>
+        </member>
+        <member name="M:Bitmex.Client.Websocket.Logging.LogExtensions.FatalFormat(Bitmex.Client.Websocket.Logging.ILog,System.String,System.Object[])">
+            <summary>
+                Logs a message at the <see cref="F:Bitmex.Client.Websocket.Logging.LogLevel.Fatal"/> log level, if enabled.
+            </summary>
+            <param name="logger">The <see cref="T:Bitmex.Client.Websocket.Logging.ILog"/> to use.</param>
+            <param name="message">The message.</param>
+            <param name="args">Optional format parameters for the message.</param>
+        </member>
+        <member name="M:Bitmex.Client.Websocket.Logging.LogExtensions.FatalException(Bitmex.Client.Websocket.Logging.ILog,System.String,System.Exception,System.Object[])">
+            <summary>
+                Logs an exception at the <see cref="F:Bitmex.Client.Websocket.Logging.LogLevel.Fatal"/> log level, if enabled.
+            </summary>
+            <param name="logger">The <see cref="T:Bitmex.Client.Websocket.Logging.ILog"/> to use.</param>
+            <param name="exception">The exception.</param>
+            <param name="message">The message.</param>
+            <param name="formatParams">Optional format parameters for the message.</param>
+        </member>
+        <member name="M:Bitmex.Client.Websocket.Logging.LogExtensions.Info(Bitmex.Client.Websocket.Logging.ILog,System.Func{System.String})">
+            <summary>
+                Logs a message at the <see cref="F:Bitmex.Client.Websocket.Logging.LogLevel.Info"/> log level, if enabled.
+            </summary>
+            <param name="logger">The <see cref="T:Bitmex.Client.Websocket.Logging.ILog"/> to use.</param>
+            <param name="messageFunc">The message function.</param>
+        </member>
+        <member name="M:Bitmex.Client.Websocket.Logging.LogExtensions.Info(Bitmex.Client.Websocket.Logging.ILog,System.String)">
+            <summary>
+                Logs a message at the <see cref="F:Bitmex.Client.Websocket.Logging.LogLevel.Info"/> log level, if enabled.
+            </summary>
+            <param name="logger">The <see cref="T:Bitmex.Client.Websocket.Logging.ILog"/> to use.</param>
+            <param name="message">The message.</param>
+        </member>
+        <member name="M:Bitmex.Client.Websocket.Logging.LogExtensions.Info(Bitmex.Client.Websocket.Logging.ILog,System.String,System.Object[])">
+            <summary>
+                Logs a message at the <see cref="F:Bitmex.Client.Websocket.Logging.LogLevel.Info"/> log level, if enabled.
+            </summary>
+            <param name="logger">The <see cref="T:Bitmex.Client.Websocket.Logging.ILog"/> to use.</param>
+            <param name="message">The message.</param>
+            <param name="args">Optional format parameters for the message.</param>
+        </member>
+        <member name="M:Bitmex.Client.Websocket.Logging.LogExtensions.Info(Bitmex.Client.Websocket.Logging.ILog,System.Exception,System.String,System.Object[])">
+            <summary>
+                Logs an exception at the <see cref="F:Bitmex.Client.Websocket.Logging.LogLevel.Info"/> log level, if enabled.
+            </summary>
+            <param name="logger">The <see cref="T:Bitmex.Client.Websocket.Logging.ILog"/> to use.</param>
+            <param name="exception">The exception.</param>
+            <param name="message">The message.</param>
+            <param name="args">Optional format parameters for the message.</param>
+        </member>
+        <member name="M:Bitmex.Client.Websocket.Logging.LogExtensions.InfoFormat(Bitmex.Client.Websocket.Logging.ILog,System.String,System.Object[])">
+            <summary>
+                Logs a message at the <see cref="F:Bitmex.Client.Websocket.Logging.LogLevel.Info"/> log level, if enabled.
+            </summary>
+            <param name="logger">The <see cref="T:Bitmex.Client.Websocket.Logging.ILog"/> to use.</param>
+            <param name="message">The message.</param>
+            <param name="args">Optional format parameters for the message.</param>
+        </member>
+        <member name="M:Bitmex.Client.Websocket.Logging.LogExtensions.InfoException(Bitmex.Client.Websocket.Logging.ILog,System.String,System.Exception,System.Object[])">
+            <summary>
+                Logs an exception at the <see cref="F:Bitmex.Client.Websocket.Logging.LogLevel.Info"/> log level, if enabled.
+            </summary>
+            <param name="logger">The <see cref="T:Bitmex.Client.Websocket.Logging.ILog"/> to use.</param>
+            <param name="exception">The exception.</param>
+            <param name="message">The message.</param>
+            <param name="formatParams">Optional format parameters for the message.</param>
+        </member>
+        <member name="M:Bitmex.Client.Websocket.Logging.LogExtensions.Trace(Bitmex.Client.Websocket.Logging.ILog,System.Func{System.String})">
+            <summary>
+                Logs a message at the <see cref="F:Bitmex.Client.Websocket.Logging.LogLevel.Trace"/> log level, if enabled.
+            </summary>
+            <param name="logger">The <see cref="T:Bitmex.Client.Websocket.Logging.ILog"/> to use.</param>
+            <param name="messageFunc">The message function.</param>
+        </member>
+        <member name="M:Bitmex.Client.Websocket.Logging.LogExtensions.Trace(Bitmex.Client.Websocket.Logging.ILog,System.String)">
+            <summary>
+                Logs a message at the <see cref="F:Bitmex.Client.Websocket.Logging.LogLevel.Trace"/> log level, if enabled.
+            </summary>
+            <param name="logger">The <see cref="T:Bitmex.Client.Websocket.Logging.ILog"/> to use.</param>
+            <param name="message">The message.</param>
+        </member>
+        <member name="M:Bitmex.Client.Websocket.Logging.LogExtensions.Trace(Bitmex.Client.Websocket.Logging.ILog,System.String,System.Object[])">
+            <summary>
+                Logs a message at the <see cref="F:Bitmex.Client.Websocket.Logging.LogLevel.Trace"/> log level, if enabled.
+            </summary>
+            <param name="logger">The <see cref="T:Bitmex.Client.Websocket.Logging.ILog"/> to use.</param>
+            <param name="message">The message.</param>
+            <param name="args">Optional format parameters for the message.</param>
+        </member>
+        <member name="M:Bitmex.Client.Websocket.Logging.LogExtensions.Trace(Bitmex.Client.Websocket.Logging.ILog,System.Exception,System.String,System.Object[])">
+            <summary>
+                Logs an exception at the <see cref="F:Bitmex.Client.Websocket.Logging.LogLevel.Trace"/> log level, if enabled.
+            </summary>
+            <param name="logger">The <see cref="T:Bitmex.Client.Websocket.Logging.ILog"/> to use.</param>
+            <param name="exception">The exception.</param>
+            <param name="message">The message.</param>
+            <param name="args">Optional format parameters for the message.</param>
+        </member>
+        <member name="M:Bitmex.Client.Websocket.Logging.LogExtensions.TraceFormat(Bitmex.Client.Websocket.Logging.ILog,System.String,System.Object[])">
+            <summary>
+                Logs a message at the <see cref="F:Bitmex.Client.Websocket.Logging.LogLevel.Trace"/> log level, if enabled.
+            </summary>
+            <param name="logger">The <see cref="T:Bitmex.Client.Websocket.Logging.ILog"/> to use.</param>
+            <param name="message">The message.</param>
+            <param name="args">Optional format parameters for the message.</param>
+        </member>
+        <member name="M:Bitmex.Client.Websocket.Logging.LogExtensions.TraceException(Bitmex.Client.Websocket.Logging.ILog,System.String,System.Exception,System.Object[])">
+            <summary>
+                Logs an exception at the <see cref="F:Bitmex.Client.Websocket.Logging.LogLevel.Trace"/> log level, if enabled.
+            </summary>
+            <param name="logger">The <see cref="T:Bitmex.Client.Websocket.Logging.ILog"/> to use.</param>
+            <param name="exception">The exception.</param>
+            <param name="message">The message.</param>
+            <param name="formatParams">Optional format parameters for the message.</param>
+        </member>
+        <member name="M:Bitmex.Client.Websocket.Logging.LogExtensions.Warn(Bitmex.Client.Websocket.Logging.ILog,System.Func{System.String})">
+            <summary>
+                Logs a message at the <see cref="F:Bitmex.Client.Websocket.Logging.LogLevel.Warn"/> log level, if enabled.
+            </summary>
+            <param name="logger">The <see cref="T:Bitmex.Client.Websocket.Logging.ILog"/> to use.</param>
+            <param name="messageFunc">The message function.</param>
+        </member>
+        <member name="M:Bitmex.Client.Websocket.Logging.LogExtensions.Warn(Bitmex.Client.Websocket.Logging.ILog,System.String)">
+            <summary>
+                Logs a message at the <see cref="F:Bitmex.Client.Websocket.Logging.LogLevel.Warn"/> log level, if enabled.
+            </summary>
+            <param name="logger">The <see cref="T:Bitmex.Client.Websocket.Logging.ILog"/> to use.</param>
+            <param name="message">The message.</param>
+        </member>
+        <member name="M:Bitmex.Client.Websocket.Logging.LogExtensions.Warn(Bitmex.Client.Websocket.Logging.ILog,System.String,System.Object[])">
+            <summary>
+                Logs a message at the <see cref="F:Bitmex.Client.Websocket.Logging.LogLevel.Warn"/> log level, if enabled.
+            </summary>
+            <param name="logger">The <see cref="T:Bitmex.Client.Websocket.Logging.ILog"/> to use.</param>
+            <param name="message">The message.</param>
+            <param name="args">Optional format parameters for the message.</param>
+        </member>
+        <member name="M:Bitmex.Client.Websocket.Logging.LogExtensions.Warn(Bitmex.Client.Websocket.Logging.ILog,System.Exception,System.String,System.Object[])">
+            <summary>
+                Logs an exception at the <see cref="F:Bitmex.Client.Websocket.Logging.LogLevel.Warn"/> log level, if enabled.
+            </summary>
+            <param name="logger">The <see cref="T:Bitmex.Client.Websocket.Logging.ILog"/> to use.</param>
+            <param name="exception">The exception.</param>
+            <param name="message">The message.</param>
+            <param name="args">Optional format parameters for the message.</param>
+        </member>
+        <member name="M:Bitmex.Client.Websocket.Logging.LogExtensions.WarnFormat(Bitmex.Client.Websocket.Logging.ILog,System.String,System.Object[])">
+            <summary>
+                Logs a message at the <see cref="F:Bitmex.Client.Websocket.Logging.LogLevel.Warn"/> log level, if enabled.
+            </summary>
+            <param name="logger">The <see cref="T:Bitmex.Client.Websocket.Logging.ILog"/> to use.</param>
+            <param name="message">The message.</param>
+            <param name="args">Optional format parameters for the message.</param>
+        </member>
+        <member name="M:Bitmex.Client.Websocket.Logging.LogExtensions.WarnException(Bitmex.Client.Websocket.Logging.ILog,System.String,System.Exception,System.Object[])">
+            <summary>
+                Logs an exception at the <see cref="F:Bitmex.Client.Websocket.Logging.LogLevel.Warn"/> log level, if enabled.
+            </summary>
+            <param name="logger">The <see cref="T:Bitmex.Client.Websocket.Logging.ILog"/> to use.</param>
+            <param name="exception">The exception.</param>
+            <param name="message">The message.</param>
+            <param name="formatParams">Optional format parameters for the message.</param>
+        </member>
+        <member name="T:Bitmex.Client.Websocket.Logging.LogLevel">
+            <summary>
+                The log level.
+            </summary>
+        </member>
+        <member name="F:Bitmex.Client.Websocket.Logging.LogLevel.Trace">
+            <summary>
+            Trace
+            </summary>
+        </member>
+        <member name="F:Bitmex.Client.Websocket.Logging.LogLevel.Debug">
+            <summary>
+            Debug
+            </summary>
+        </member>
+        <member name="F:Bitmex.Client.Websocket.Logging.LogLevel.Info">
+            <summary>
+            Info
+            </summary>
+        </member>
+        <member name="F:Bitmex.Client.Websocket.Logging.LogLevel.Warn">
+            <summary>
+            Warn
+            </summary>
+        </member>
+        <member name="F:Bitmex.Client.Websocket.Logging.LogLevel.Error">
+            <summary>
+            Error
+            </summary>
+        </member>
+        <member name="F:Bitmex.Client.Websocket.Logging.LogLevel.Fatal">
+            <summary>
+            Fatal
+            </summary>
+        </member>
+        <member name="T:Bitmex.Client.Websocket.Logging.LogProvider">
+            <summary>
+            Provides a mechanism to create instances of <see cref="T:Bitmex.Client.Websocket.Logging.ILog" /> objects.
+            </summary>
+        </member>
+        <member name="M:Bitmex.Client.Websocket.Logging.LogProvider.SetCurrentLogProvider(Bitmex.Client.Websocket.Logging.ILogProvider)">
+            <summary>
+            Sets the current log provider.
+            </summary>
+            <param name="logProvider">The log provider.</param>
+        </member>
+        <member name="P:Bitmex.Client.Websocket.Logging.LogProvider.IsDisabled">
+            <summary>
+            Gets or sets a value indicating whether this is logging is disabled.
+            </summary>
+            <value>
+            <c>true</c> if logging is disabled; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:Bitmex.Client.Websocket.Logging.LogProvider.OnCurrentLogProviderSet">
+            <summary>
+            Sets an action that is invoked when a consumer of your library has called SetCurrentLogProvider. It is 
+            important that hook into this if you are using child libraries (especially ilmerged ones) that are using
+            LibLog (or other logging abstraction) so you adapt and delegate to them.
+            <see cref="M:Bitmex.Client.Websocket.Logging.LogProvider.SetCurrentLogProvider(Bitmex.Client.Websocket.Logging.ILogProvider)"/> 
+            </summary>
+        </member>
+        <member name="M:Bitmex.Client.Websocket.Logging.LogProvider.For``1">
+            <summary>
+            Gets a logger for the specified type.
+            </summary>
+            <typeparam name="T">The type whose name will be used for the logger.</typeparam>
+            <returns>An instance of <see cref="T:Bitmex.Client.Websocket.Logging.ILog"/></returns>
+        </member>
+        <member name="M:Bitmex.Client.Websocket.Logging.LogProvider.GetCurrentClassLogger">
+            <summary>
+            Gets a logger for the current class.
+            </summary>
+            <returns>An instance of <see cref="T:Bitmex.Client.Websocket.Logging.ILog"/></returns>
+        </member>
+        <member name="M:Bitmex.Client.Websocket.Logging.LogProvider.GetLogger(System.Type,System.String)">
+            <summary>
+            Gets a logger for the specified type.
+            </summary>
+            <param name="type">The type whose name will be used for the logger.</param>
+            <param name="fallbackTypeName">If the type is null then this name will be used as the log name instead</param>
+            <returns>An instance of <see cref="T:Bitmex.Client.Websocket.Logging.ILog"/></returns>
+        </member>
+        <member name="M:Bitmex.Client.Websocket.Logging.LogProvider.GetLogger(System.String)">
+            <summary>
+            Gets a logger with the specified name.
+            </summary>
+            <param name="name">The name.</param>
+            <returns>An instance of <see cref="T:Bitmex.Client.Websocket.Logging.ILog"/></returns>
+        </member>
+        <member name="M:Bitmex.Client.Websocket.Logging.LogProvider.OpenNestedContext(System.String)">
+            <summary>
+            Opens a nested diagnostics context.
+            </summary>
+            <param name="message">A message.</param>
+            <returns>An <see cref="T:System.IDisposable"/> that closes context when disposed.</returns>
+        </member>
+        <member name="M:Bitmex.Client.Websocket.Logging.LogProvider.OpenMappedContext(System.String,System.Object,System.Boolean)">
+            <summary>
+            Opens a mapped diagnostics context.
+            </summary>
+            <param name="key">A key.</param>
+            <param name="value">A value.</param>
+            <param name="destructure">A optional paramater to indicate message should be destructured.</param>
+            <returns>An <see cref="T:System.IDisposable"/> that closes context when disposed.</returns>
+        </member>
+        <member name="T:Bitmex.Client.Websocket.Logging.LogProviders.LibLogException">
+            <summary>
+            Exception thrown by LibLog.
+            </summary>
+        </member>
+        <member name="M:Bitmex.Client.Websocket.Logging.LogProviders.LibLogException.#ctor(System.String)">
+            <summary>
+            Initializes a new LibLogException with the specified message.
+            </summary>
+            <param name="message">The message</param>
+        </member>
+        <member name="M:Bitmex.Client.Websocket.Logging.LogProviders.LibLogException.#ctor(System.String,System.Exception)">
+            <summary>
+            Initializes a new LibLogException with the specified message and inner exception.
+            </summary>
+            <param name="message">The message.</param>
+            <param name="inner">The inner exception.</param>
+        </member>
+        <member name="M:Bitmex.Client.Websocket.Logging.LogProviders.LogMessageFormatter.SimulateStructuredLogging(System.Func{System.String},System.Object[])">
+            <summary>
+                Some logging frameworks support structured logging, such as serilog. This will allow you to add names to structured
+                data in a format string:
+                For example: Log("Log message to {user}", user). This only works with serilog, but as the user of LibLog, you don't
+                know if serilog is actually
+                used. So, this class simulates that. it will replace any text in {curly braces} with an index number.
+                "Log {message} to {user}" would turn into => "Log {0} to {1}". Then the format parameters are handled using regular
+                .net string.Format.
+            </summary>
+            <param name="messageBuilder">The message builder.</param>
+            <param name="formatParameters">The format parameters.</param>
+            <returns></returns>
+        </member>
+        <member name="T:Bitmex.Client.Websocket.Logging.LogProviders.LogProviderBase">
+            <summary>
+                Base class for specific log providers.
+            </summary>
+        </member>
+        <member name="F:Bitmex.Client.Websocket.Logging.LogProviders.LogProviderBase.ErrorInitializingProvider">
+            <summary>
+                Error message should initializing the log provider fail.
+            </summary>
+        </member>
+        <member name="M:Bitmex.Client.Websocket.Logging.LogProviders.LogProviderBase.#ctor">
+            <summary>
+                Initialize an instance of the <see cref="T:Bitmex.Client.Websocket.Logging.LogProviders.LogProviderBase"/> class by initializing the references
+                to the nested and mapped diagnostics context-obtaining functions.
+            </summary>
+        </member>
+        <member name="M:Bitmex.Client.Websocket.Logging.LogProviders.LogProviderBase.GetLogger(System.String)">
+            <summary>
+            Gets the specified named logger.
+            </summary>
+            <param name="name">Name of the logger.</param>
+            <returns>The logger reference.</returns>
+        </member>
+        <member name="M:Bitmex.Client.Websocket.Logging.LogProviders.LogProviderBase.OpenNestedContext(System.String)">
+            <summary>
+            Opens a nested diagnostics context. Not supported in EntLib logging.
+            </summary>
+            <param name="message">The message to add to the diagnostics context.</param>
+            <returns>A disposable that when disposed removes the message from the context.</returns>
+        </member>
+        <member name="M:Bitmex.Client.Websocket.Logging.LogProviders.LogProviderBase.OpenMappedContext(System.String,System.Object,System.Boolean)">
+            <summary>
+            Opens a mapped diagnostics context. Not supported in EntLib logging.
+            </summary>
+            <param name="key">A key.</param>
+            <param name="value">A value.</param>
+            <param name="destructure">Determines whether to call the destructor or not.</param>
+            <returns>A disposable that when disposed removes the map from the context.</returns>
+        </member>
+        <member name="M:Bitmex.Client.Websocket.Logging.LogProviders.LogProviderBase.GetOpenNdcMethod">
+            <summary>
+                Returns the provider-specific method to open a nested diagnostics context.
+            </summary>
+            <returns>A provider-specific method to open a nested diagnostics context.</returns>
+        </member>
+        <member name="M:Bitmex.Client.Websocket.Logging.LogProviders.LogProviderBase.GetOpenMdcMethod">
+            <summary>
+                Returns the provider-specific method to open a mapped diagnostics context.
+            </summary>
+            <returns>A provider-specific method to open a mapped diagnostics context.</returns>
+        </member>
+        <member name="T:Bitmex.Client.Websocket.Logging.LogProviders.LogProviderBase.OpenNdc">
+            <summary>
+                Delegate defining the signature of the method opening a nested diagnostics context.
+            </summary>
+            <param name="message">The message to add to the diagnostics context.</param>
+            <returns>A disposable that when disposed removes the message from the context.</returns>
+        </member>
+        <member name="T:Bitmex.Client.Websocket.Logging.LogProviders.LogProviderBase.OpenMdc">
+            <summary>
+                Delegate defining the signature of the method opening a mapped diagnostics context.
+            </summary>
+            <param name="key">A key.</param>
+            <param name="value">A value.</param>
+            <param name="destructure">Determines whether to call the destructor or not.</param>
+            <returns>A disposable that when disposed removes the map from the context.</returns>
+        </member>
+        <member name="T:Bitmex.Client.Websocket.Logging.LogProviders.LoupeLogProvider.WriteDelegate">
+            <summary>
+                The form of the Loupe Log.Write method we're using
+            </summary>
+        </member>
+        <member name="P:Bitmex.Client.Websocket.Logging.LogProviders.LoupeLogProvider.ProviderIsAvailableOverride">
+            <summary>
+                Gets or sets a value indicating whether [provider is available override]. Used in tests.
+            </summary>
+            <value>
+                <c>true</c> if [provider is available override]; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="T:Bitmex.Client.Websocket.Logging.Logger">
+            <summary>
+            Logger delegate.
+            </summary>
+            <param name="logLevel">The log level</param>
+            <param name="messageFunc">The message function</param>
+            <param name="exception">The exception</param>
+            <param name="formatParameters">The format parameters</param>
+            <returns>A boolean.</returns>
+        </member>
+    </members>
+</doc>
